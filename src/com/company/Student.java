@@ -32,4 +32,5 @@ public class Student implements Runnable {
 
         System.out.printf("%s arriving after %d seconds \n", Thread.currentThread().getName(), duration);
     }
+
 }

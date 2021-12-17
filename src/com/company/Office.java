@@ -26,14 +26,17 @@ public class Office {
 
     public void acceptStudent(){
         lock.lock();
-        if(isOfficeFull()){
-
-            System.out.printf("%s can't sit at %s \n",Thread.currentThread().getName(), new Date());
-            lock.unlock();
-            return;
+        while(isOfficeFull()){
+                        try {
+                            System.out.printf("%s can't sit at %s \n",Thread.currentThread().getName(), new Date());
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
         }
         lock.unlock();
         studentCount.incrementAndGet();
+
 
         try {
             TAChair.acquire();

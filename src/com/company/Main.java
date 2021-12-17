@@ -5,8 +5,8 @@ import java.util.concurrent.Semaphore;
 public class Main {
 
     public static void main(String[] args)  throws InterruptedException{
-        int noOfStudents = 15;
-        int nofTAS =2;
+        int noOfStudents = 40;
+        int nofTAS =5;
         Thread [] Studentthreads = new Thread[noOfStudents];
         Thread [] TASthreads = new Thread[nofTAS];
 
