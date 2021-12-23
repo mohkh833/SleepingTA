@@ -7,10 +7,13 @@ import java.util.concurrent.TimeUnit;
 public class TeachingAssistant implements Runnable{
     private Semaphore TALock;
     private Semaphore studentLock;
+    private int TASLeeping;
+    private int TAWalkingUp=0;
 
-    public TeachingAssistant(Semaphore TALock, Semaphore studentLock) {
+    public TeachingAssistant(Semaphore TALock, Semaphore studentLock, int nofTAS) {
         this.TALock = TALock;
         this.studentLock = studentLock;
+        this.TASLeeping = nofTAS;
     }
 
     @Override
@@ -20,10 +23,18 @@ public class TeachingAssistant implements Runnable{
                 TALock.acquire();
 
                 System.out.printf("%s waking up \n", Thread.currentThread().getName());
-
+                TAWalkingUp++;
+                TASLeeping--;
+                System.out.printf("num of TAWalkingUp is %s and num of TASleeping is %s  \n", TAWalkingUp,TASLeeping);
                 HelpStudents();
 
                 studentLock.release();
+                System.out.printf("%s sleeping \n", Thread.currentThread().getName());
+                TASLeeping++;
+                if(TAWalkingUp !=0)
+                    TAWalkingUp--;
+                System.out.printf("num of TAWalkingUp is %s and num of TASleeping is %s  \n", TAWalkingUp,TASLeeping);
+//                Thread.sleep(5000);
 
             }catch (InterruptedException e){
                 e.printStackTrace();
