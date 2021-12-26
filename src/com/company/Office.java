@@ -14,7 +14,8 @@ public class Office {
     private int noOfWaitingChar;
     private Lock lock;
     public int LateStudents=0;
-
+    public int queueCount =0;
+    public int arr [];
 
     public Office(Semaphore TALock, Semaphore studentLock, int noOfWaitingChar, int noOfTAS) {
         this.TALock = TALock;
@@ -31,7 +32,7 @@ public class Office {
                         try {
                             System.out.printf("%s can't sit at %s \n",Thread.currentThread().getName(), new Date());
                             LateStudents = LateStudents +1;
-                            System.out.printf("%s students will come later \n",LateStudents);
+
                             Thread.sleep(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -39,28 +40,24 @@ public class Office {
         }
         lock.unlock();
         studentCount.incrementAndGet();
-        System.out.printf("%s students in Queue \n",studentCount);
+        queueCount = studentCount.intValue();
+        System.out.printf("%s students in Queue \n",queueCount);
 
 
 
         try {
 
 
-
+            System.out.printf("%s students will come later \n",LateStudents );
             TAChair.acquire();
             studentCount.decrementAndGet();
-            System.out.printf("%s students in Queue \n",studentCount);
+            queueCount = studentCount.intValue();
+            System.out.printf("%s students in Queue \n",queueCount);
 
             System.out.printf("%s having Meeting with TA at %s \n", Thread.currentThread().getName(), new Date());
+
             TALock.release();
 
-            if(LateStudents != 0){
-                LateStudents = LateStudents -1;
-                System.out.printf("%s students will come later \n",LateStudents);
-            } else if (LateStudents ==0) {
-                LateStudents = 0;
-                System.out.printf("%s students will come later \n",LateStudents);
-            }
 
             studentLock.acquire();
             System.out.printf("%s completed Meeting at %s \n", Thread.currentThread().getName(), new Date());
@@ -70,6 +67,10 @@ public class Office {
             return;
         } finally {
             TAChair.release();
+//            if(!isOfficeFull() && LateStudents!=0)
+//                LateStudents = LateStudents -1;
+//            else if (LateStudents==0)
+//                LateStudents=0;
         }
     }
 

@@ -5,15 +5,15 @@ import java.util.concurrent.Semaphore;
 public class Main {
 
     public static void main(String[] args)  throws InterruptedException{
-        int noOfStudents = 10;
-        int nofTAS =2;
+        int noOfStudents =15;
+        int nofTAS =3;
         Thread [] Studentthreads = new Thread[noOfStudents];
         Thread [] TASthreads = new Thread[nofTAS];
 
         Semaphore TALock = new Semaphore(0);
         Semaphore StudentLock = new Semaphore(0);
 
-        Office office = new Office(TALock, StudentLock, 5, nofTAS);
+        Office office = new Office(TALock, StudentLock,5, nofTAS);
 
         TeachingAssistant ta = new TeachingAssistant(TALock, StudentLock, nofTAS);
 
